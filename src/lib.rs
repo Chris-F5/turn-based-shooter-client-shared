@@ -18,6 +18,12 @@ impl<State> Client<State>
 where
     State: ClientState,
 {
+    pub fn new() -> Client<Idle> {
+        Client {
+            packet_outbox: VecDeque::new(),
+            state: Idle,
+        }
+    }
     pub fn try_handle_server_packet(&mut self, packet: ServerPacket) -> Option<ServerPacket> {
         State::try_handle_server_packet(self, packet)
     }
