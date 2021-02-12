@@ -6,6 +6,13 @@ pub use turn_based_shooter_shared::*;
 use client_state::ClientState;
 use std::collections::VecDeque;
 
+pub fn new_client() -> Client<Idle> {
+    Client {
+        packet_outbox: VecDeque::new(),
+        state: Idle,
+    }
+}
+
 pub struct Client<State>
 where
     State: ClientState,
@@ -18,12 +25,6 @@ impl<State> Client<State>
 where
     State: ClientState,
 {
-    pub fn new() -> Client<Idle> {
-        Client {
-            packet_outbox: VecDeque::new(),
-            state: Idle,
-        }
-    }
     pub fn try_handle_server_packet(&mut self, packet: ServerPacket) -> Option<ServerPacket> {
         State::try_handle_server_packet(self, packet)
     }
