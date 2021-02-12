@@ -1,5 +1,6 @@
 mod client_state;
 
+pub use client_state::in_matchmaker::BattleReadyState;
 pub use client_state::{Idle, InBattle, InMatchmaker};
 pub use turn_based_shooter_shared::*;
 

@@ -27,15 +27,20 @@ impl ClientState for InMatchmaker {
     }
 }
 
+pub enum BattleReadyState {
+    Ready(Client<InBattle>),
+    Waiting(Client<InMatchmaker>),
+}
+
 impl Client<InMatchmaker> {
-    pub fn is_battle_ready(self) -> Option<Client<InBattle>> {
+    pub fn is_battle_ready(self) -> BattleReadyState {
         if let Some(join_battle_packet) = self.state.join_battle_packet {
-            Some(Client {
+            BattleReadyState::Ready(Client {
                 packet_outbox: self.packet_outbox,
                 state: InBattle::new(join_battle_packet),
             })
         } else {
-            None
+            BattleReadyState::Waiting(self)
         }
     }
 }

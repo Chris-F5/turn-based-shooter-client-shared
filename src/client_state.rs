@@ -1,6 +1,6 @@
-mod idle;
-mod in_battle;
-mod in_matchmaker;
+pub mod idle;
+pub mod in_battle;
+pub mod in_matchmaker;
 
 pub use idle::Idle;
 pub use in_battle::InBattle;
