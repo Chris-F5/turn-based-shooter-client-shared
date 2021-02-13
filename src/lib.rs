@@ -26,6 +26,9 @@ impl<State> Client<State>
 where
     State: ClientState,
 {
+    pub fn recv_outbox(&mut self) -> Option<ClientPacket> {
+        self.packet_outbox.pop_front()
+    }
     pub fn try_handle_server_packet(&mut self, packet: ServerPacket) -> Option<ServerPacket> {
         State::try_handle_server_packet(self, packet)
     }
