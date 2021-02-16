@@ -15,7 +15,7 @@ impl InMatchmaker {
 
 impl ClientState for InMatchmaker {
     fn try_handle_server_packet(
-        client: &mut Client<Self>,
+        client: &mut Client<InMatchmaker>,
         server_packet: ServerPacket,
     ) -> Option<ServerPacket> {
         if let ServerPacket::BattleStart(battle_start_packet) = server_packet {
@@ -35,10 +35,8 @@ pub enum BattleReadyState {
 impl Client<InMatchmaker> {
     pub fn is_battle_ready(self) -> BattleReadyState {
         if let Some(join_battle_packet) = self.state.join_battle_packet {
-            BattleReadyState::Ready(Client {
-                packet_outbox: self.packet_outbox,
-                state: InBattle::new(join_battle_packet),
-            })
+            let in_battle_state = InBattle::new(join_battle_packet);
+            BattleReadyState::Ready(self.context.change_state(in_battle_state))
         } else {
             BattleReadyState::Waiting(self)
         }

@@ -6,10 +6,7 @@ impl ClientState for Idle {}
 
 impl Client<Idle> {
     pub fn join_matchmaker(mut self) -> Client<InMatchmaker> {
-        self.send_packet(ClientPacket::JoinBattleMatchmaker);
-        Client {
-            packet_outbox: self.packet_outbox,
-            state: InMatchmaker::new(),
-        }
+        self.context.send_packet(ClientPacket::JoinBattleMatchmaker);
+        self.context.change_state(InMatchmaker::new())
     }
 }
